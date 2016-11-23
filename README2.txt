@@ -1,41 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="http://java.sun.com/xml/ns/javaee" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
-	id="WebApp_ID" version="3.0">
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<display-name>web-photo</display-name>
-	
-	<!-- properties file load -->
+    <display-name>portal_solr</display-name>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/spring/applicationContext*.xml, classpath*:/spring/applicationContext*.xml</param-value>
     </context-param>
-    
-    
-    <!-- listener -->
+
+
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
+   <!--  <listener>
+        <listener-class>com.demai.context.SystemContextListener</listener-class>
+    </listener> -->
     
-    <!-- spring mvc -->
+
     <servlet>
         <servlet-name>mvc-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
-    
-    <!-- character encoding filter -->
+
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -54,30 +53,43 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-	<!-- method filter -->
     <filter>
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
         <async-supported>true</async-supported>
     </filter>
+
     <filter-mapping>
         <filter-name>HiddenHttpMethodFilter</filter-name>
         <servlet-name>mvc-dispatcher</servlet-name>
     </filter-mapping>
 
-	<!-- put form content filter -->
     <filter>
         <filter-name>HttpPutFormContentFilter</filter-name>
         <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
         <async-supported>true</async-supported>
     </filter>
+
     <filter-mapping>
         <filter-name>HttpPutFormContentFilter</filter-name>
         <servlet-name>mvc-dispatcher</servlet-name>
     </filter-mapping>
-    
-	<!-- session 失效时间 -->    
-    <session-config>
+	
+	<!--  
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>https</web-resource-name>
+	        <url-pattern>/sso/toSsoLogin</url-pattern>
+	        <url-pattern>/sso/ssoLogin</url-pattern>
+	        <url-pattern>/sso/ssoLogout</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint>
+	-->
+	
+	<session-config>
 		<session-timeout>180</session-timeout>
 	</session-config>
 </web-app>
