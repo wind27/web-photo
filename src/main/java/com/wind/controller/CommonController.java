@@ -1,9 +1,10 @@
 package com.wind.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sun.imageio.plugins.common.ImageUtil;
+import com.wind.common.Constant.FileSize;
 import com.wind.common.Constant.RequestStatusCode;
 import com.wind.common.Constant.RequestStatusMsg;
 import com.wind.common.Meta;
@@ -49,19 +50,38 @@ private final static Logger logger = LoggerFactory.getLogger(CommonController.cl
     @RequestMapping(value = "/upload/img", method=RequestMethod.POST)
     public Object imageUpload(HttpServletRequest request, HttpServletResponse response) {
     	Map<String, Object> resultMap = new HashMap<>();
-    	Map<String, Object> dataMap = new HashMap<>();
     	Meta meta = new Meta();
     	MultipartFile multipartFile = null;
     	try {
     		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;  
     		multipartFile = multipartRequest.getFile("file");
+    		Random random = new Random();
+    		int num = random.nextInt(999999);
+    		File file = new File("/wind/image/"+num+".jpg");
+    		while(file.exists()) {
+    			num = random.nextInt(999999);
+    			file = new File("/wind/image/"+num+".jpg");
+    		}
+    		multipartFile.transferTo(file);
+    		
+    		if(file.length()>FileSize.IMAGE_MAX_SIZE) {
+    			meta.setCode(RequestStatusCode.FILE_UPLOAD_ERROR);
+    	    	meta.setMsg(RequestStatusMsg.FILE_UPLOAD_ERROR);
+    	    	resultMap.put("meta", meta);
+        		return resultMap;
+    		}
+    		
+    		System.out.println(file.length());
+    		meta.setCode(RequestStatusCode.SUCCESS);
+	    	meta.setMsg(RequestStatusMsg.SUCCESS);
+	    	resultMap.put("meta", meta);
+    		return resultMap;
 		} catch (Exception e) {
 			meta.setCode(RequestStatusCode.PARAMS_ERROR);
 	    	meta.setMsg(RequestStatusMsg.PARAMS_ERROR);
 	    	resultMap.put("meta", meta);
 	    	return resultMap;
 		}
-    	return null;
     }
     
 }
