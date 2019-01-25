@@ -44,7 +44,7 @@
 						type:'post',
 						data:{
 							'username':username,
-							'pwd':encrypted
+							'password':encrypted
 						},
 						success: function(data){
 							console.info(data);

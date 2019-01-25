@@ -8,14 +8,17 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd ">
 
-    <mvc:annotation-driven>
+    <!--<mvc:annotation-driven>
         <mvc:async-support default-timeout="30000"/>
+        <mvc:argument-resolvers>
+            <bean class="com.wind.spring.argument.resolver.PwdHandlerMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <constructor-arg value="UTF-8"/>
             </bean>
         </mvc:message-converters>
-    </mvc:annotation-driven>
+    </mvc:annotation-driven>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
@@ -29,8 +32,8 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.wind.controller"/>
     <!-- 把标记了@Controller注解的类转换为bean -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-    </bean>
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    </bean>-->
 
 
     <bean id="multipartResolver"
